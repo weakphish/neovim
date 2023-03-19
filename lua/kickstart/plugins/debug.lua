@@ -21,6 +21,7 @@ return {
 
     -- Add your own debuggers here
     'leoluz/nvim-dap-go',
+    'mfussenegger/nvim-dap-python',
   },
 
   config = function()
@@ -37,6 +38,7 @@ return {
       ensure_installed = {
         -- Update this to ensure that you have the debuggers for the langs you want
         'delve',
+        'debugpy',
       },
     }
 
@@ -45,14 +47,14 @@ return {
     require('mason-nvim-dap').setup_handlers()
 
     -- Basic debugging keymaps, feel free to change to your liking!
-    vim.keymap.set('n', '<F5>', dap.continue)
-    vim.keymap.set('n', '<F1>', dap.step_into)
-    vim.keymap.set('n', '<F2>', dap.step_over)
-    vim.keymap.set('n', '<F3>', dap.step_out)
-    vim.keymap.set('n', '<leader>b', dap.toggle_breakpoint)
-    vim.keymap.set('n', '<leader>B', function()
-      dap.set_breakpoint(vim.fn.input 'Breakpoint condition: ')
-    end)
+    vim.keymap.set('n', '<leader>dc', dap.continue, { desc = "[c]ontinue" })
+    vim.keymap.set('n', '<leader>di', dap.step_into, { desc = "Step [i]nto" })
+    vim.keymap.set('n', '<leader>do', dap.step_over, { desc = "Step [o]ver" })
+    vim.keymap.set('n', '<leader>du', dap.step_out, { desc = "Step [u]p (out)" })
+    vim.keymap.set('n', '<leader>db', dap.toggle_breakpoint, { desc = "Toggle [b]reakpoint" })
+    vim.keymap.set('n', '<leader>dB', function()
+      dap.set_breakpoint(vim.fn.input '[B]reakpoint condition: ')
+    end, { desc = "Breakpoint condition" })
 
     -- Dap UI setup
     -- For more information, see |:help nvim-dap-ui|
@@ -81,5 +83,6 @@ return {
 
     -- Install golang specific config
     require('dap-go').setup()
+    require('dap-python').setup('~/.virtualenvs/debugpy/bin/python')
   end,
 }
